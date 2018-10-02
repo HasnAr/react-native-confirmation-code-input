@@ -22,6 +22,8 @@ export default class ConfirmationCodeInput extends Component {
     codeInputStyle: TextInput.propTypes.style,
     containerStyle: viewPropTypes.style,
     onFulfill: PropTypes.func,
+    smsFlag: PropTypes.bool,
+    codeVerification: PropTypes.array
   };
   
   static defaultProps = {
@@ -35,7 +37,9 @@ export default class ConfirmationCodeInput extends Component {
     inactiveColor: 'rgba(255, 255, 255, 0.2)',
     space: 8,
     compareWithCode: '',
-    ignoreCase: false
+    ignoreCase: false,
+    smsFlag: false,
+    codeVerification: ['','','','']
   };
   
   constructor(props) {
@@ -43,7 +47,7 @@ export default class ConfirmationCodeInput extends Component {
     
     this.state = {
       codeArr: new Array(this.props.codeLength).fill(''),
-      currentIndex: 0
+      currentIndex: 0,
     };
     
     this.codeInputRefs = [];
@@ -272,7 +276,7 @@ _onKeyPress(e) {
           {...this.props}
           autoFocus={autoFocus && id == 0}
           onFocus={() => this._onFocus(id)}
-          value={this.state.codeArr[id] ? this.state.codeArr[id].toString() : ''}
+          value={this.props.smsFlag? this.props.codeVerification[id].toString(): this.state.codeArr[id] ? this.state.codeArr[id].toString() : ''}
           onChangeText={text => this._onInputCode(text, id)}
           onKeyPress={(e) => this._onKeyPress(e)}
           maxLength={1}
